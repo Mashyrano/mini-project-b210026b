@@ -171,7 +171,7 @@ $certgendate=$row->UpdationDate;            ?>
 </table>
           
           <p align="left"><b>Certificate Genration Date :</b> <?php echo htmlentities($certgendate);?></p>
-   <a href="download-certificate.php?cid=<?php  echo $row->ApplicationID;?>" class="btn btn-danger">Download Certificate</a>                        
+   <a href="download-death-certificate.php?cid=<?php  echo $row->ApplicationID;?>" class="btn btn-danger">Download Certificate</a>                        
       </div></div>
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
 <?php
 namespace Dompdf;
-require_once 'dompdf/autoload.inc.php';
+require_once '../admin/dompdf/autoload.inc.php';
 ob_start();
 $con=mysqli_connect("localhost", "root", "", "obcsdb");
 if(mysqli_connect_errno()){
@@ -53,7 +53,7 @@ while ($row=mysqli_fetch_array($ret)) { ?>
 
   </tr>
    <tr>
-<th scope>Permanent Address </th>
+<th scope>Permanent Address</th>
     <td><?php  echo $row['PermanentAdd'];?></td>
     <th scope>Place of Death</th>
     <td><?php  echo $row['PlaceofDeath'];?></td>
