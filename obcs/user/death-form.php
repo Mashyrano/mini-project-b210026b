@@ -157,7 +157,7 @@ try {
                                             <div class="col-lg-12">
                                                 <div class="all-form-element-inner">
                                                     
-                                                    <form method="post">
+                                                    <form id="myForm" method="post" onsubmit="return validate()">
                                                         
                                                         <div class="form-group-inner">
                                                             <div class="row">
@@ -299,7 +299,10 @@ try {
         </div>
     </div>
   <?php include_once('includes/footer.php');?>
-  
+
+    <!-- Form Validation
+        ============================================ -->
+    <script src="javaScript/formValidation_death.js"></script> 
     <!-- jquery
 		============================================ -->
     <script src="js/vendor/jquery-1.11.3.min.js"></script>

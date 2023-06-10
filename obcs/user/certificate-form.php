@@ -163,7 +163,7 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                                             <div class="col-lg-12">
                                                 <div class="all-form-element-inner">
                                                     
-                                                    <form method="post">
+                                                    <form id="myForm" method="post" onsubmit="return validate()">
                                                         
                                                         <div class="form-group-inner">
                                                             <div class="row">
@@ -305,7 +305,12 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
         </div>
     </div>
   <?php include_once('includes/footer.php');?>
+
   
+<!-- Form Validation
+        ============================================ -->
+    <script src="javaScript/formValidation.js"></script>
+
     <!-- jquery
 		============================================ -->
     <script src="js/vendor/jquery-1.11.3.min.js"></script>
