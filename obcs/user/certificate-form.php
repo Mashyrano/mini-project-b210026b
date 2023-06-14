@@ -42,10 +42,9 @@ $appnumber=mt_rand(100000000, 999999999);
 $BirthRecordNo = $_POST['BirthRecordNo'];
 
 
-$ret="select DateofBirth from tblapplication where DateofBirth=:dob and FatherLastName=:FatherLastName";
+$ret="select * from tblapplication where BirthRecordNo=:BirthRecordNo";
  $query= $dbh -> prepare($ret);
-$query->bindParam(':dob',$dob,PDO::PARAM_STR);
-$query->bindParam(':FatherLastName',$FatherLastName,PDO::PARAM_STR);
+$query->bindParam(':BirthRecordNo',$BirthRecordNo,PDO::PARAM_STR);
 
 $query-> execute();
      $results = $query -> fetchAll(PDO::FETCH_OBJ);
@@ -109,7 +108,7 @@ $query-> execute();
 else
 {
 
-echo "<script>alert('Date of Birth and Father Name is  already exist. Please try again');</script>";
+echo "<script>alert('Birth Record Number already exist. Please try again');</script>";
   
 }}
   ?>

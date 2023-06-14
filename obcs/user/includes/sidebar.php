@@ -24,7 +24,7 @@ if($query->rowCount() > 0)
 {
 foreach($results as $row)
 {               ?>
-                    <a href="#"><img src="img/message/avatar.jpg" alt="" />
+                    <a href="#"><img src="img/message/avatar.png" alt="" />
                     </a>
                     <h3><?php  echo $row->FirstName;?>  <?php  echo $row->LastName;?></h3>
                     <p><?php  echo $row->MobileNumber;?></p><?php $cnt=$cnt+1;}} ?>
