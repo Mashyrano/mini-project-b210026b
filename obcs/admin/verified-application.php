@@ -119,9 +119,10 @@ if (strlen($_SESSION['obcsaid']==0)) {
                                                     <th data-field="state" data-checkbox="true"></th>
                                                     <th>S.No</th>
                                                     <th>Application Number</th>
-                                                    <th>Name</th>
-                                                    <th >Mobile Number</th>
-                                                    <th>Father's Name</th>
+                                                    <th>First Names</th>
+                                                    <th >Last Name</th>
+                                                    <th>Father's First Names</th>
+                                                    <th>Father's last Name</th>
                                                     <th>Status</th>
                                                     <th data-field="action">Action</th>
                                                 </tr>
@@ -146,10 +147,11 @@ foreach($results as $row)
                                                     <td></td>
                                                     <td><?php echo htmlentities($cnt);?></td>
                                                     <td><?php  echo htmlentities($row->ApplicationID);?></td>
-                                                    <td><?php  echo htmlentities($row->FullName);?></td>
-                                                   <td><?php  echo htmlentities($row->MobileNumber);?></td>
-                                                    <td><?php  echo htmlentities($row->NameofFather);?></td>
-                                                  <?php if($row->Status==""){ ?>
+                                                     <td><?php  echo htmlentities($row->ChildFirstNames);?></td>
+                                                   <td><?php  echo htmlentities($row->childLastName);?></td>
+                                                   <td><?php  echo htmlentities($row->FatherFirstNames);?></td>
+                                                   <td><?php  echo htmlentities($row->FatherLastName);?></td>
+              <?php if($row->Status==""){ ?>
 
                      <td><?php echo "Still Pending"; ?></td>
 <?php } else { ?>                  <td><?php  echo htmlentities($row->Status);?>

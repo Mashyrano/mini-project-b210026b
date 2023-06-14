@@ -1,40 +1,32 @@
 <?php
 session_start();
 error_reporting(0);
-$_SESSION['BirthRecord'] = null;
 include('includes/dbconnection.php');
-if (strlen($_SESSION['obcsaid']==0)) {
+if (strlen($_SESSION['obcsuid']==0)) {
   header('location:logout.php');
   } else{
-if(isset($_POST['submit']))
-  {
 
+$BirthRecordNo = $_SESSION['BirthRecord'];
+#unset($_SESSION['BirthRecord']);
 
-$vid=$_GET['viewid'];
-    $bookingid=$_GET['bookingid'];
-    $status=$_POST['status'];
-   $remark=$_POST['remark'];
-  
-
-$sql= "update tblapplication set Status=:status,Remark=:remark where ID=:vid";
-$query=$dbh->prepare($sql);
-$query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->bindParam(':remark',$remark,PDO::PARAM_STR);
-$query->bindParam(':vid',$vid,PDO::PARAM_STR);
-
- $query->execute();
-
-  echo '<script>alert("Remark has been updated")</script>';
- echo "<script>window.location.href ='all-applications.php'</script>";
-}
-
-
-  ?>
+  ?> 
 <!doctype html>
 <html class="no-js" lang="en">
 
 <head>
-   
+  
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+.bold {font-weight: bold;}
+</style>
+
     <title>Manage Application Form | Online Certificate System</title>
   
     <!-- Google Fonts
@@ -97,7 +89,7 @@ $query->bindParam(':vid',$vid,PDO::PARAM_STR);
                                         <ul class="breadcome-menu">
                                             <li><a href="dashboard.php">Home</a> <span class="bread-slash">/</span>
                                             </li>
-                                            <li><span class="bread-blod">Application Form</span>
+                                            <li><span class="bread-blod">Birth record </span>
                                             </li>
                                         </ul>
                                     </div>
@@ -117,7 +109,7 @@ $query->bindParam(':vid',$vid,PDO::PARAM_STR);
                             <div class="sparkline13-list shadow-reset">
                                 <div class="sparkline13-hd">
                                     <div class="main-sparkline13-hd">
-                                        <h1>View <span class="table-project-n">Detail of</span> Application</h1>
+                                        <h1><span class="table-project-n">Detail of</span> Birth Record</h1>
                                         <div class="sparkline13-outline-icon">
                                             <span class="sparkline13-collapse-link"><i class="fa fa-chevron-up"></i></span>
                                             <span><i class="fa fa-wrench"></i></span>
@@ -131,9 +123,9 @@ $query->bindParam(':vid',$vid,PDO::PARAM_STR);
                                          <?php
                                $vid=$_GET['viewid'];
 
-$sql="SELECT tblapplication.*,tbluser.FirstName,tbluser.LastName,tbluser.MobileNumber,tbluser.Address from  tblapplication join  tbluser on tblapplication.UserID=tbluser.ID where tblapplication.ID=:vid";
+$sql="SELECT * from  birth_record  where BirthRecordNo=:BirthRecordNo";
 $query = $dbh -> prepare($sql);
-$query-> bindParam(':vid', $vid, PDO::PARAM_STR);
+$query-> bindParam(':BirthRecordNo', $BirthRecordNo, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 
@@ -141,144 +133,75 @@ $cnt=1;
 if($query->rowCount() > 0)
 {
 foreach($results as $row)
-{           $_SESSION['BirthRecord'] = $row->BirthRecordNo;  ?>
-                                <table border="1" class="table table-bordered">
- <tr align="center">
-<td colspan="4" style="font-size:20px;color:blue">
- User Details</td></tr>
-<tr align="center">
-<td colspan="4" style="font-size:20px;color:red">
- Application Number:   <?php  echo $row->ApplicationID;?></td></tr>
-    <tr>
-    <th scope>First Name</th>
-    <td><?php  echo $row->FirstName;?></td>
-    <th scope>Last Name</th>
-    <td><?php  echo $row->LastName;?></td>
-  </tr>
-  <tr>
-    <th scope>Mobile Number</th>
-    <td><?php  echo $row->MobileNumber;?></td>
-    <th>Address</th>
-    <td><?php  echo $row->Address;?></td>
-  </tr>
-<tr align="center">
-<td colspan="4" style="font-size:20px;color:blue">
- Application Details</td></tr>
-</table>
+{               ?>
 
 <table style="width:100%" border="1" class="table table-bordered">
  <tr>
     <th rowspan="5">Child</th>
 
-        <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->ChildFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->childLastName;?></td></tr>
-        <tr><td colspan="2"><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->PlaceofBirth;?></td></tr>
-        <tr><td colspan="2"><span class='bold'>Date Of Birth:&#160;&#160;</span><?php  echo $row->DateofBirth;?></td></tr>
-        <tr><td colspan="2"><span class='bold'>Sex:&#160;&#160;</span><?php  echo $row->Gender;?></td></tr>
+       
+        <tr><td colspan="2"><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->PlaceOfBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Date Of Birth:&#160;&#160;</span><?php  echo $row->DateOfBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>BirthWeight:&#160;&#160;</span><?php  echo $row->BirthWeight;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Sex:&#160;&#160;</span><?php  echo $row->Sex;?></td></tr>
   
  </tr>
- <tr>
-    <th rowspan="3">Father</th>
-    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->FatherFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->FatherLastName;?></td></tr>
-
-    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->FatherPob;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->FatherID;?></td></tr>
-  </tr>
    <tr>
-    <th rowspan="3">Mother</th>
-    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->MotherFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->MotherLastName;?></td></tr>
+    <th rowspan="3">Maiden</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->FirstName;?></td> <td><span class='bold'>Maiden Surname:&#160;&#160;</span><?php  echo $row->MaidenSurname;?></td></tr>
 
-    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->MotherPob;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->MotherID;?></td></tr>
+    <tr><td><span class='bold'>Married Surname:&#160;&#160;</span><?php  echo $row->MarriedSurname;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->IDNumber;?></td></tr>
   </tr>
 
   <tr>
-    <th rowspan="3">Informant</th>
-    <tr><td><span class='bold'>Full name:&#160;&#160;</span><?php  echo $row->InformantName;?></td> <td><span class='bold'>Qualification:&#160;&#160;</span><?php  echo $row->InformantQualification;?></td></tr>
+    <th rowspan="2">Officer</th>
+    <tr><td><span class='bold'>Full Name:&#160;&#160;</span><?php  echo $row->OfficerFullName;?></td> <td><span class='bold'>Designation:&#160;&#160;</span><?php  echo $row->OfficerDesignation;?></td></tr>
 
-    <tr><td colspan="2"><span class='bold'>Address:&#160;&#160;</span><?php  echo $row->InformantAddress;?></td></tr>
+   
   </tr>
   
   <tr>
     <th rowspan="3"> . </th>
     <tr>
-        <td><span class='bold'>Birth Record Number:&#160;&#160;</span><?php  echo $row->BirthRecordNo;?></td>
-        <td class="datatable-ct"><a href="view-birth-record-detail.php?viewid=<?php echo htmlentities ($row->ID);?>" class='btn btn-primary'>View Birth Record</a>
-                                                    </td>
+        <td colspan="2"><span class='bold'>Birth Record Number:&#160;&#160;</span><?php  echo $row->BirthRecordNo;?></td>
+
   </tr>
-    <tr>
-    <?php if($row->Remark==""){ ?>
-
-                     <td><span class='bold'>Remark:&#160;&#160;</span><?php echo "Your application still pending"; ?></td>
-<?php } else { ?>                  <td><span class='bold'>Remark:&#160;&#160;</span><?php  echo htmlentities($row->Remark);?>
-                  </td>
-                  <?php } ?>
-    <?php if($row->Status==""){ ?>
-
-                     <td><span class='bold'>Status:&#160;&#160;</span><?php echo "Pending"; ?></td>
-<?php } else { ?>                  <td><span class='bold'>Status:&#160;&#160;</span><?php  echo htmlentities($row->Status);?>
-                  </td></tr></tr>
-                  <?php } ?>
-
-
-
-<?php  if($row->Status=='Verified'): ?>
-    <tr>
-        <td colspan="4" style="text-align:center;">
-    <a href="download-certificate.php?cid=<?php  echo $row->ApplicationID;?>" class="btn btn-danger">
-    Download Certificate</a></td>
-</tr>
-<?php endif;?>
-
-
-
-  <?php $cnt=$cnt+1;}} ?>
-
-</table>
-<?php 
-
-if ($row->Status==""){
-?> 
-<p align="center"  style="padding-top: 20px">                            
- <button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#myModal">Take Action</button></p>  
-
-<?php } ?>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-     <div class="modal-content">
-      <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Take Action</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                <table class="table table-bordered table-hover data-tables">
-
-                                <form method="post" name="submit">
-
-                                
-                               
-     <tr>
-    <th>Remark :</th>
-    <td>
-    <textarea name="remark" placeholder="Remark" rows="6" cols="14" class="form-control wd-450" required="true"></textarea></td>
-  </tr> 
-   
- 
   <tr>
-    <th>Status :</th>
-    <td>
+        <?php if($row->DeliveredByTrained=="true"){ ?>
+             <td colspan="2"><span class='bold'>If delivered at Home:&#160;&#160; Delivered by &#160;</span> <?php echo "Trained"; ?></td>
 
-   <select name="status" class="form-control wd-450" required="true" >
-     <option value="Verified" selected="true">Verified</option>
-     <option value="Rejected">Rejected</option>
-   </select></td>
+        <?php } elseif($row->DeliveredByTrained=="false"){ ?>
+            <td colspan="2"><span class='bold'>If delivered at Home:&#160;&#160; Delivered by &#160;</span> <?php echo "UnTrained"; ?></td>
+
+        <?php } else { ?> <td colspan="2"><span class='bold'>If delivered at Home:&#160;&#160; Delivered by &#160;</span> <?php echo "Not Delivered at Home"; ?></td>
+              
   </tr>
-</table>
-</div>
-<div class="modal-footer">
- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
- <button type="submit" name="submit" class="btn btn-primary">Update</button>
   
-  </form>
+ 
+  <?php }}?>
+ <?php }
+
+else {
+    echo '<script>alert("BirthRecord Not Found")</script>';
+    }?>
+
+</table>
+<!-- ########################################-->
+      <?php 
+      $sql= "Select * from tblapplication where BirthRecordNo=:BirthRecordNo";
+    $query=$dbh->prepare($sql);
+    $query->bindParam(':BirthRecordNo',$BirthRecordNo,PDO::PARAM_STR);
+    $query->execute();
+    $results=$query->fetchAll(PDO::FETCH_OBJ);
+
+    if($query->rowCount() > 0)
+    {
+    foreach($results as $row){?>
+
+    <a href="view-application-detail.php?viewid=<?php echo htmlentities ($row->ID);?>" class="btn btn-primary">Go back</a><td> <?php
+    }}?>
+<!--##########################-->
+
                                     </div>
                                 </div>
                             </div>
@@ -290,7 +213,9 @@ if ($row->Status==""){
         </div>
     </div>
   <?php include_once('includes/footer.php');?>
-   
+
+
+
     <!-- jquery
 		============================================ -->
     <script src="js/vendor/jquery-1.11.3.min.js"></script>
