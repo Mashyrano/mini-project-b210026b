@@ -121,50 +121,41 @@ $results=$query->fetchAll(PDO::FETCH_OBJ);
 foreach($results as $row)
 {   
 $certgendate=$row->UpdationDate;            ?>
-<table border="1" class="table table-bordered">
+<table style="width:100%" border="1" class="table table-bordered">
+ <tr>
+    <th rowspan="5">Child</th>
 
-
-<tr align="center">
-<td colspan="4" >
-<strong> Application Number:</strong>   <?php  echo $row->ApplicationID;?></td></tr>
-
-
-    <th scope>Full Name</th>
-    <td><?php  echo $row->FullName;?></td>
-    <th scope>Gender</th>
-    <td><?php  echo $row->Gender;?></td>
-  </tr>
-   <tr>
-    <th scope>Date of Birth</th>
-    <td><?php  echo $row->DateofBirth;?></td>
-    <th scope>Place of Birth</th>
-    <td><?php  echo $row->PlaceofBirth;?></td>
-  </tr>
-  <tr>
-     <th scope>Name of Mother</th>
-    <td><?php  echo $row->NameOfMother;?></td>
-    <th scope>Name of Father</th>
-    <td><?php  echo $row->NameofFather;?></td>
+        <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->ChildFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->childLastName;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->PlaceofBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Date Of Birth:&#160;&#160;</span><?php  echo $row->DateofBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Sex:&#160;&#160;</span><?php  echo $row->Gender;?></td></tr>
   
+ </tr>
+ <tr>
+    <th rowspan="3">Father</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->FatherFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->FatherLastName;?></td></tr>
+
+    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->FatherPob;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->FatherID;?></td></tr>
   </tr>
    <tr>
-    <th scope>Permanent Address</th>
-  <td><?php  echo $row->PermanentAdd;?></td>
-    <th scope>Postal Address</th>
-    <td><?php  echo $row->PostalAdd;?></td>
+    <th rowspan="3">Mother</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->MotherFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->MotherLastName;?></td></tr>
 
+    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->MotherPob;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->MotherID;?></td></tr>
   </tr>
-   <tr>
-        <th scope>Mobile Number</th>
-    <td><?php  echo $row->MobileNumber;?></td>
-    <th scope>Email</th>
-    <td><?php  echo $row->Email;?></td>
 
+  <tr>
+    <th rowspan="3">Informant</th>
+    <tr><td><span class='bold'>Full name:&#160;&#160;</span><?php  echo $row->InformantName;?></td> <td><span class='bold'>Qualification:&#160;&#160;</span><?php  echo $row->InformantQualification;?></td></tr>
+
+    <tr><td colspan="2"><span class='bold'>Address:&#160;&#160;</span><?php  echo $row->InformantAddress;?></td></tr>
   </tr>
-   <tr>
-
-    <th scope>Date of apply</th>
-    <td><?php  echo $row->Dateofapply;?></td>
+  
+  <tr>
+    <th rowspan="3"> . </th>
+    <tr>
+        <td colspan="2"><span class='bold'>Birth Record Number:&#160;&#160;</span><?php  echo $row->BirthRecordNo;?></td>
+        
   </tr>
  
   <?php }?>

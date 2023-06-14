@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 06, 2023 at 06:05 AM
+-- Generation Time: Jun 14, 2023 at 01:14 AM
 -- Server version: 8.0.11
 -- PHP Version: 7.4.33
 
@@ -20,6 +20,34 @@ SET time_zone = "+00:00";
 --
 -- Database: `obcsdb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `birth_record`
+--
+
+CREATE TABLE `birth_record` (
+  `MaidenSurname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `FirstName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `IDNumber` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `MarriedSurname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `DateOfBirth` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `BirthWeight` float DEFAULT NULL,
+  `Sex` varchar(10) DEFAULT NULL,
+  `PlaceOfBirth` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `DeliveredByTrained` varchar(10) DEFAULT NULL,
+  `BirthRecordNo` int(50) NOT NULL,
+  `OfficerFullName` varchar(100) DEFAULT NULL,
+  `OfficerDesignation` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `birth_record`
+--
+
+INSERT INTO `birth_record` (`MaidenSurname`, `FirstName`, `IDNumber`, `MarriedSurname`, `DateOfBirth`, `BirthWeight`, `Sex`, `PlaceOfBirth`, `DeliveredByTrained`, `BirthRecordNo`, `OfficerFullName`, `OfficerDesignation`) VALUES
+('Chirwa', 'Charlotte', '12-222828', 'Chirwa', '2023-06-13', 1.8, 'Female', 'Harare Hospital', 'false', 2018161, 'Marlon Zulu', 'Records Officer');
 
 -- --------------------------------------------------------
 
@@ -91,28 +119,34 @@ CREATE TABLE `tblapplication` (
   `ApplicationID` varchar(200) DEFAULT NULL,
   `DateofBirth` varchar(200) DEFAULT NULL,
   `Gender` varchar(50) DEFAULT NULL,
-  `FullName` varchar(200) DEFAULT NULL,
+  `ChildFirstNames` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `PlaceofBirth` varchar(200) DEFAULT NULL,
-  `NameofFather` varchar(200) DEFAULT NULL,
-  `NameOfMother` varchar(120) DEFAULT NULL,
-  `PermanentAdd` mediumtext,
-  `PostalAdd` mediumtext,
-  `MobileNumber` bigint(10) DEFAULT NULL,
-  `Email` varchar(200) DEFAULT NULL,
+  `FatherFirstNames` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `MotherFirstNames` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `childLastName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FatherLastName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FatherPob` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FatherID` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `Dateofapply` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `Remark` varchar(200) DEFAULT NULL,
   `Status` varchar(50) DEFAULT NULL,
-  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `BirthRecordNo` int(50) DEFAULT NULL,
+  `InformantAddress` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `InformantQualification` varchar(100) DEFAULT NULL,
+  `InformantName` varchar(50) DEFAULT NULL,
+  `MotherLastName` varchar(50) DEFAULT NULL,
+  `MotherID` varchar(50) DEFAULT NULL,
+  `MotherPob` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tblapplication`
 --
 
-INSERT INTO `tblapplication` (`ID`, `UserID`, `ApplicationID`, `DateofBirth`, `Gender`, `FullName`, `PlaceofBirth`, `NameofFather`, `NameOfMother`, `PermanentAdd`, `PostalAdd`, `MobileNumber`, `Email`, `Dateofapply`, `Remark`, `Status`, `UpdationDate`) VALUES
-(6, 5, '577047666', '2023-06-14', 'Male', 'Marshall Take', 'Bindura', 'T Ross', 'Elina', 'Chinhoye', 'pbag225', 772797021, 'shirano@gmail.com', '2023-05-15 23:54:06', 'T Ross haasi baba wemunhu', 'Rejected', '2023-05-15 23:56:40'),
-(7, 5, '873630608', '2023-05-15', 'Female', 'Abigail Trow', 'Ruwa', 'Brian', 'Elina', 'Gweru', '1233 PBag ', 76366211, 'abintosh@gmail.com', '2023-05-25 23:54:34', 'I verify', 'Verified', '2023-05-26 09:21:28'),
-(8, 5, '117129079', '1999-06-03', 'Male', 'takunda', 'Bindura', 'tafara', 'mercy', 'Harare', 'Bindura', 772797022, 'mahupete@gmail.com', '2023-05-27 07:04:44', 'Wanyanya kubara', 'Rejected', '2023-05-27 19:12:23');
+INSERT INTO `tblapplication` (`ID`, `UserID`, `ApplicationID`, `DateofBirth`, `Gender`, `ChildFirstNames`, `PlaceofBirth`, `FatherFirstNames`, `MotherFirstNames`, `childLastName`, `FatherLastName`, `FatherPob`, `FatherID`, `Dateofapply`, `Remark`, `Status`, `UpdationDate`, `BirthRecordNo`, `InformantAddress`, `InformantQualification`, `InformantName`, `MotherLastName`, `MotherID`, `MotherPob`) VALUES
+(33, 5, '247134180', '2023-06-12', 'Female', 'Jessie Angela', 'Harare Hospital', 'Marshall Takudzwa', 'Charlotte', 'Mutimbwa', 'Mutimbwa', 'Amaven Hospital', '70-28282992Ptt', '2023-06-13 08:46:06', 'Seems legit', 'Verified', '2023-06-14 00:53:29', 2018161, '15 street Donside Banket', 'Sabhuku', 'Tino Zandara', 'Chirwa', '82-2626778G54', 'Blues Clinic'),
+(34, 5, '481306336', '2024-05-16', 'Male', 'Noel', 'Gwanda', 'Gobo', 'Thelma', 'Mkata', 'Gobo', 'Kwewe', '12-228272', '2023-06-13 13:34:34', NULL, NULL, NULL, 12345, '15 Rd Haibry Blenadle', 'Your Honer', 'Yolanda Zebra', 'Kanda', '12-272525222', 'Blues Clinic');
 
 -- --------------------------------------------------------
 
@@ -142,6 +176,12 @@ INSERT INTO `tbluser` (`ID`, `FirstName`, `LastName`, `MobileNumber`, `Address`,
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `birth_record`
+--
+ALTER TABLE `birth_record`
+  ADD PRIMARY KEY (`BirthRecordNo`);
 
 --
 -- Indexes for table `dthapplication`
@@ -175,7 +215,7 @@ ALTER TABLE `tbluser`
 -- AUTO_INCREMENT for table `dthapplication`
 --
 ALTER TABLE `dthapplication`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbladmin`
@@ -187,7 +227,7 @@ ALTER TABLE `tbladmin`
 -- AUTO_INCREMENT for table `tblapplication`
 --
 ALTER TABLE `tblapplication`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `tbluser`

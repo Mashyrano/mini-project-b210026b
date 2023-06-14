@@ -11,68 +11,84 @@ echo "Connection Fail".mysqli_connect_error();
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Birth Certificate</title>
-<style>
-table, th, td {
-  border: 1px solid;
-}
-</style>
+   
+    <title>Birth Certificate</title>
+    <style type="text/css">
+        .bold {font-weight: bold;}
+        .bold1 {font-weight: bold; font-size: 1.5em;}
+        table {
+            border-collapse: collapse;
+           
+        }
+        tr {
+            border-collapse: collapse;
+        }
+        tr > th {
+            padding: 0; margin: 0;
+        }
+        tr > tr {
+            margin: 2px; padding: 5px;
+        }
+        td, th {
+            padding: 5px;
+
+        }
+        
+  </style>
+
 </head>
+
 <body>
 <h2 align="center">Birth Certificate  Details</h2>
 
-	<?php 
+    <?php 
 
 $cid=intval($_GET['cid']);
-	$ret=mysqli_query($con,"SELECT tblapplication.*,tbluser.FirstName,tbluser.LastName,tbluser.MobileNumber,tbluser.Address from  tblapplication join  tbluser on tblapplication.UserID=tbluser.ID where tblapplication.ApplicationID='$cid'");
+    $ret=mysqli_query($con,"SELECT * from  tblapplication where ApplicationID='$cid'");
 
 while ($row=mysqli_fetch_array($ret)) { ?>
 <h3>Application / Certificate Number: <?php  echo $row['ApplicationID'];?></h3>
-<table  align="center" border="1" width="100%">
+<table style="width:100%" border="1" class="table table-bordered">
+ <tr>
+    <th rowspan="5">Child</th>
 
-<tr>
-    <th width="150">Full Name</th>
-    <td width="250"><?php  echo $row['FullName'];?></td>
-    <th width="150">Gender</th>
-    <td><?php  echo $row['Gender'];?></td>
+        <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row['ChildFirstNames'];?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row['childLastName'];?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row['PlaceofBirth'];?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Date Of Birth:&#160;&#160;</span><?php  echo $row['DateofBirth'];?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Sex:&#160;&#160;</span><?php  echo $row['Gender'];?></td></tr>
+  
+ </tr>
+ <tr>
+    <th rowspan="3">Father</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row['FatherFirstNames'];?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row['FatherLastName'];?></td></tr>
+
+    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row['FatherPob'];?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row['FatherID'];?></td></tr>
   </tr>
    <tr>
-    <th scope>Date of Birth</th>
-    <td><?php  echo $row['DateofBirth'];?></td>
-    <th scope>Place of Birth</th>
-    <td><?php  echo $row['PlaceofBirth'];?></td>
-  </tr>
-</table>
+    <th rowspan="3">Mother</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row['MotherFirstNames'];?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row['MotherLastName'];?></td></tr>
 
-  <table  align="center" border="1" width="100%" style="margin-top:3%;">
+    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row['MotherPob'];?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row['MotherID'];?></td></tr>
+  </tr>
+
   <tr>
-    <th width="150">Name of Mother</th>
-    <td width="250"><?php  echo $row['NameOfMother'];?></td>
-       <th width="150">Name of Father</th>
-    <td><?php  echo $row['NameofFather'];?></td>
+    <th rowspan="3">Informant</th>
+    <tr><td><span class='bold'>Full name:&#160;&#160;</span><?php  echo $row['InformantName'];?></td> <td><span class='bold'>Qualification:&#160;&#160;</span><?php  echo $row['InformantQualification'];?></td></tr>
 
+    <tr><td colspan="2"><span class='bold'>Address:&#160;&#160;</span><?php  echo $row['InformantAddress'];?></td></tr>
   </tr>
-   <tr>
-<th scope>Permanent Address of Parents</th>
-    <td><?php  echo $row['PermanentAdd'];?></td>
-    <th scope>Postal Address Permanent Address of Parents</th>
-    <td><?php  echo $row['PostalAdd'];?></td>
-
+  
+  <tr>
+    <th rowspan="3"> . </th>
+    <tr>
+        <td colspan="2"><span class='bold'>Birth Record Number:&#160;&#160;</span><?php  echo $row['BirthRecordNo'];?></td>        
   </tr>
-   <tr>
-        <th scope>Parents Mobile Number</th>
-    <td><?php  echo $row['MobileNumber'];?></td>
-    <th scope>Parents Email</th>
-    <td><?php  echo $row['Email'];?></td>
-
-  </tr>
-
 
 </table>
 
 <table  align="center" border="1" width="100%" style="margin-top:3%;">
 <tr>
-	    <th width="150">Certificate Number</th>
+        <th width="150">Certificate Number</th>
     <td><?php  echo $row['ApplicationID'];?></td>
     <th >Apply Date</th>
     <td><?php  echo $row['Dateofapply'];?></td>

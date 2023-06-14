@@ -117,12 +117,13 @@ if (strlen($_SESSION['obcsuid']==0)) {
                                         <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
                                             <thead>
                                                 <tr>
-                                            
+                                                    <th data-field="state" data-checkbox="true"></th>
                                                     <th>S.No</th>
                                                     <th>Application Number</th>
-                                                    <th>Name</th>
-                                                    <th >Mobile Number</th>
-                                                    <th>Father's Name</th>
+                                                    <th>First Names</th>
+                                                    <th >Last Name</th>
+                                                    <th>Father's First Names</th>
+                                                    <th>Father's last Name</th>
                                                     <th>Status</th>
                                                     <th data-field="action">Action</th>
                                                 </tr>
@@ -145,12 +146,14 @@ if($query->rowCount() > 0)
 foreach($results as $row)
 {               ?>
                                                 <tr>
+                                                    <td></td>
                                                     <td><?php echo htmlentities($cnt);?></td>
                                                     <td><?php  echo htmlentities($row->ApplicationID);?></td>
-                                                    <td><?php  echo htmlentities($row->FullName);?></td>
-                                                   <td><?php  echo htmlentities($row->MobileNumber);?></td>
-                                                    <td><?php  echo htmlentities($row->NameofFather);?></td>
-                                                  <?php if($row->Status==""){ ?>
+                                                    <td><?php  echo htmlentities($row->ChildFirstNames);?></td>
+                                                   <td><?php  echo htmlentities($row->childLastName);?></td>
+                                                   <td><?php  echo htmlentities($row->FatherFirstNames);?></td>
+                                                   <td><?php  echo htmlentities($row->FatherLastName);?></td>
+                      <?php if($row->Status==""){ ?>
 
                      <td><?php echo "Still Pending"; ?></td>
 <?php } else { ?>                  <td><?php  echo htmlentities($row->Status);?>

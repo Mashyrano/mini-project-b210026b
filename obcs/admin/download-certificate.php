@@ -4,7 +4,7 @@ session_start();
 require_once 'dompdf/autoload.inc.php';
 ob_start();
 $userid = $_SESSION['obcsaid'];
-$con=mysqli_connect("localhost", "root", "Mashy@5304", "obcsdb");
+$con=mysqli_connect("localhost", "root", "", "obcsdb");
 if(mysqli_connect_errno()){
 echo "Connection Fail".mysqli_connect_error();
 }
