@@ -6,15 +6,28 @@ if (strlen($_SESSION['obcsuid']==0)) {
   header('location:logout.php');
   } else{
 
+$BirthRecordNo = $_SESSION['BirthRecord'];
+#unset($_SESSION['BirthRecord']);
 
-
-  ?>
+  ?> 
 <!doctype html>
 <html class="no-js" lang="en">
 
 <head>
-   
-    <title>Manage Application Form | Online Birth Certificate System</title>
+  
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+.bold {font-weight: bold;}
+</style>
+
+    <title>Manage Application Form | Online Certificate System</title>
   
     <!-- Google Fonts
 		============================================ -->
@@ -76,7 +89,7 @@ if (strlen($_SESSION['obcsuid']==0)) {
                                         <ul class="breadcome-menu">
                                             <li><a href="dashboard.php">Home</a> <span class="bread-slash">/</span>
                                             </li>
-                                            <li><span class="bread-blod">Application Form</span>
+                                            <li><span class="bread-blod">Birth record </span>
                                             </li>
                                         </ul>
                                     </div>
@@ -96,7 +109,7 @@ if (strlen($_SESSION['obcsuid']==0)) {
                             <div class="sparkline13-list shadow-reset">
                                 <div class="sparkline13-hd">
                                     <div class="main-sparkline13-hd">
-                                        <h1>View <span class="table-project-n">Detail of</span> Application</h1>
+                                        <h1><span class="table-project-n">Detail of</span> Birth Record</h1>
                                         <div class="sparkline13-outline-icon">
                                             <span class="sparkline13-collapse-link"><i class="fa fa-chevron-up"></i></span>
                                             <span><i class="fa fa-wrench"></i></span>
@@ -106,36 +119,13 @@ if (strlen($_SESSION['obcsuid']==0)) {
                                 </div>
                                 <div class="sparkline13-graph">
                                     <div class="datatable-dashv1-list custom-datatable-overright">
-                                        <div id="toolbar">
-                                            <select class="form-control">
-                                                <option value="">Export Basic</option>
-                                                <option value="all">Export All</option>
-                                                <option value="selected">Export Selected</option>
-                                            </select>
-                                        </div>
-                                        <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
-                                            <thead>
-                                                <tr>
-                                                    <th data-field="state" data-checkbox="true"></th>
-                                                    <th>S.No</th>
-                                                    <th>Application Number</th>
-                                                    <th>First Names</th>
-                                                    <th >Last Name</th>
-                                                    <th>Father's First Names</th>
-                                                    <th>Father's last Name</th>
-                                                    <th>Status</th>
-                                                    <th data-field="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                               
-                                             
-                                              <?php
-                                            $uid= $_SESSION['obcsuid'];
-$sql="SELECT * from tblapplication where UserID=:uid";
+                                       
+                                         <?php
+                               $vid=$_GET['viewid'];
 
+$sql="SELECT * from  birth_record  where BirthRecordNo=:BirthRecordNo";
 $query = $dbh -> prepare($sql);
-$query-> bindParam(':uid', $uid, PDO::PARAM_STR);
+$query-> bindParam(':BirthRecordNo', $BirthRecordNo, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 
@@ -144,28 +134,56 @@ if($query->rowCount() > 0)
 {
 foreach($results as $row)
 {               ?>
-                                                <tr>
-                                                    <td></td>
-                                                    <td><?php echo htmlentities($cnt);?></td>
-                                                    <td><?php  echo htmlentities($row->ApplicationID);?></td>
-                                                    <td><?php  echo htmlentities($row->ChildFirstNames);?></td>
-                                                   <td><?php  echo htmlentities($row->childLastName);?></td>
-                                                   <td><?php  echo htmlentities($row->FatherFirstNames);?></td>
-                                                   <td><?php  echo htmlentities($row->FatherLastName);?></td>
-                                                    
-<?php if($row->Status==""){ ?>
-<td><?php echo "Still Pending"; ?></td>
-<?php } else { ?>                 
-<td><?php  echo htmlentities($row->Status);?></td>
-                  <?php } ?>
-                                                    
-            <td class="datatable-ct"><a href="view-application-detail.php?viewid=<?php echo htmlentities ($row->ID);?>" class='btn btn-primary'>View Details</a>
-                                                    </td>
-                                                </tr>
-                                             <?php $cnt=$cnt+1;}} ?>  
-                                            
-                                            </tbody>
-                                        </table>
+
+<table style="width:100%" border="1" class="table table-bordered">
+ <tr>
+    <th rowspan="5">Child</th>
+
+       
+        <tr><td colspan="2"><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->PlaceOfBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Date Of Birth:&#160;&#160;</span><?php  echo $row->DateOfBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>BirthWeight:&#160;&#160;</span><?php  echo $row->BirthWeight;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Sex:&#160;&#160;</span><?php  echo $row->Sex;?></td></tr>
+  
+ </tr>
+   <tr>
+    <th rowspan="3">Maiden</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->FirstName;?></td> <td><span class='bold'>Maiden Surname:&#160;&#160;</span><?php  echo $row->MaidenSurname;?></td></tr>
+
+    <tr><td><span class='bold'>Married Surname:&#160;&#160;</span><?php  echo $row->MarriedSurname;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->IDNumber;?></td></tr>
+  </tr>
+
+  <tr>
+    <th rowspan="2">Officer</th>
+    <tr><td><span class='bold'>Full Name:&#160;&#160;</span><?php  echo $row->OfficerFullName;?></td> <td><span class='bold'>Designation:&#160;&#160;</span><?php  echo $row->OfficerDesignation;?></td></tr>
+
+   
+  </tr>
+  
+  <tr>
+    <th rowspan="3"> . </th>
+    <tr>
+        <td colspan="2"><span class='bold'>Birth Record Number:&#160;&#160;</span><?php  echo $row->BirthRecordNo;?></td>
+
+  </tr>
+  <tr>
+        <?php if($row->DeliveredByTrained=="true"){ ?>
+             <td colspan="2"><span class='bold'>If delivered at Home:&#160;&#160; Delivered by &#160;</span> <?php echo "Trained"; ?></td>
+
+        <?php } elseif($row->DeliveredByTrained=="false"){ ?>
+            <td colspan="2"><span class='bold'>If delivered at Home:&#160;&#160; Delivered by &#160;</span> <?php echo "UnTrained"; ?></td>
+
+        <?php } else { ?> <td colspan="2"><span class='bold'>If delivered at Home:&#160;&#160; Delivered by &#160;</span> <?php echo "Not Delivered at Home"; ?></td>
+              
+  </tr>
+
+ 
+  <?php }}?>
+ <?php }
+
+else {echo "<script>window.location.href ='birth-record-forms.php'</script>"; }?>
+
+</table>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +195,9 @@ foreach($results as $row)
         </div>
     </div>
   <?php include_once('includes/footer.php');?>
-   
+
+
+
     <!-- jquery
 		============================================ -->
     <script src="js/vendor/jquery-1.11.3.min.js"></script>

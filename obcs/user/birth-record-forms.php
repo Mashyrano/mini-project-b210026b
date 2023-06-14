@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION['BirthRecord'] = null;
+
 error_reporting(0);
 include('includes/dbconnection.php');
 if (strlen($_SESSION['obcsuid']==0)) {
@@ -10,42 +10,40 @@ if (strlen($_SESSION['obcsuid']==0)) {
   {
 
 
-$uid=$_SESSION['obcsuid'];
+$BirthRecordNo = $_SESSION['BirthRecord'];
+unset($_SESSION['BirthRecord']);
 
-#child
+#$BirthRecordNo = $_POST['BirthRecordNo'];
 
-$dob=$_POST['dob'];
-$gender=$_POST['gender'];
-$ChildFirstNames=$_POST['ChildFirstNames'];
-$childLastName=$_POST['childLastName'];
-$pob=$_POST['pob'];
 
-#father
-$FatherFirstNames=$_POST['FatherFirstNames'];
-$FatherLastName=$_POST['FatherLastName'];
-$FatherPob=$_POST['FatherPob'];
-$FatherID=$_POST['FatherID'];
+#Maiden
 
-#mother
-$MotherFirstNames=$_POST['MotherFirstNames'];
-$MotherLastName=$_POST['MotherLastName'];
-$MotherPob=$_POST['MotherPob'];
-$MotherID=$_POST['MotherID'];
+$MaidenSurname=$_POST['MaidenSurname'];
+$FirstName=$_POST['FirstName'];
+$IDNumber=$_POST['IDNumber'];
+$MarriedSurname=$_POST['MarriedSurname'];
 
-#informant
-$InformantFullname=$_POST['InformantFullname'];
-$InformantQualification=$_POST['InformantQualification'];
-$InformantAddress=$_POST['InformantAddress'];
+
+#Child
+$DateOfBirth=$_POST['DateOfBirth'];
+$BirthWeight=$_POST['BirthWeight'];
+$Sex=$_POST['Sex'];
+$PlaceOfBirth=$_POST['PlaceOfBirth'];
+
+#Issuing Officer
+$OfficerFullName=$_POST['OfficerFullName'];
+$OfficerDesignation=$_POST['OfficerDesignation'];
 
 #other
-$appnumber=mt_rand(100000000, 999999999);
-$BirthRecordNo = $_POST['BirthRecordNo'];
+$DeliveredByTrained=$_POST['DeliveredByTrained'];
 
 
-$ret="select DateofBirth from tblapplication where DateofBirth=:dob and FatherLastName=:FatherLastName";
+
+
+$ret="select DateOfBirth from birth_record where BirthRecordNo=:BirthRecordNo";
  $query= $dbh -> prepare($ret);
-$query->bindParam(':dob',$dob,PDO::PARAM_STR);
-$query->bindParam(':FatherLastName',$FatherLastName,PDO::PARAM_STR);
+$query->bindParam(':BirthRecordNo',$BirthRecordNo,PDO::PARAM_STR);
+
 
 $query-> execute();
      $results = $query -> fetchAll(PDO::FETCH_OBJ);
@@ -53,63 +51,44 @@ $query-> execute();
 {
 
 
-    $sql="insert into tblapplication(UserID,ApplicationID,DateofBirth,Gender,ChildFirstNames,childLastName,PlaceofBirth,FatherFirstNames,FatherLastName,FatherPob,FatherID,MotherFirstNames,MotherLastName,MotherID,MotherPob,InformantName,InformantQualification,InformantAddress,BirthRecordNo)values(:uid,:appnumber,:dob,:gender,:ChildFirstNames,:childLastName,:pob,:FatherFirstNames,:FatherLastName,:FatherPob,:FatherID,:MotherFirstNames,:MotherLastName,:MotherID,:MotherPob,:InformantFullname,:InformantQualification,:InformantAddress,:BirthRecordNo)";
+    $sql="insert into birth_record(BirthRecordNo,MaidenSurname,FirstName,IDNumber,MarriedSurname,DateOfBirth,BirthWeight,Sex,PlaceOfBirth,DeliveredByTrained,OfficerFullName,OfficerDesignation)values(:BirthRecordNo,:MaidenSurname,:FirstName,:IDNumber,:MarriedSurname,:DateOfBirth,:BirthWeight,:Sex,:PlaceOfBirth,:DeliveredByTrained,:OfficerFullName,:OfficerDesignation)";
     $query=$dbh->prepare($sql);
 
-    #other
+    #Maiden
     #---------------
-    $query->bindParam(':uid',$uid,PDO::PARAM_STR);
-    $query->bindParam(':appnumber',$appnumber,PDO::PARAM_STR);
-    $query->bindParam(':BirthRecordNo',$BirthRecordNo,PDO::PARAM_STR);
+    $query->bindParam(':MaidenSurname',$MaidenSurname,PDO::PARAM_STR);
+    $query->bindParam(':FirstName',$FirstName,PDO::PARAM_STR);
+    $query->bindParam(':IDNumber',$IDNumber,PDO::PARAM_STR);
+    $query->bindParam(':MarriedSurname',$MarriedSurname,PDO::PARAM_STR);
 
     #child
     #---------------
-    $query->bindParam(':dob',$dob,PDO::PARAM_STR);
-    $query->bindParam(':gender',$gender,PDO::PARAM_STR);
-    $query->bindParam(':pob',$pob,PDO::PARAM_STR);
-    $query->bindParam(':ChildFirstNames',$ChildFirstNames,PDO::PARAM_STR);
-    $query->bindParam(':childLastName',$childLastName,PDO::PARAM_STR);
+    $query->bindParam(':DateOfBirth',$DateOfBirth,PDO::PARAM_STR);
+    $query->bindParam(':BirthWeight',$BirthWeight,PDO::PARAM_STR);
+    $query->bindParam(':Sex',$Sex,PDO::PARAM_STR);
+    $query->bindParam(':PlaceOfBirth',$PlaceOfBirth,PDO::PARAM_STR);
 
-    #Father
+
+    #issuing officer
     #---------------
-    $query->bindParam(':FatherFirstNames',$FatherFirstNames,PDO::PARAM_STR);
-    $query->bindParam(':FatherLastName',$FatherLastName,PDO::PARAM_STR);
-    $query->bindParam(':FatherPob',$FatherPob,PDO::PARAM_STR);
-    $query->bindParam(':FatherID',$FatherID,PDO::PARAM_STR);
+    $query->bindParam(':OfficerFullName',$OfficerFullName,PDO::PARAM_STR);
+    $query->bindParam(':OfficerDesignation',$OfficerDesignation,PDO::PARAM_STR);
 
-    #Mother
+    #other
     #---------------
-    $query->bindParam(':MotherFirstNames',$MotherFirstNames,PDO::PARAM_STR);
-    $query->bindParam(':MotherLastName',$MotherLastName,PDO::PARAM_STR);
-    $query->bindParam(':MotherPob',$MotherPob,PDO::PARAM_STR);
-    $query->bindParam(':MotherID',$MotherID,PDO::PARAM_STR);
-
-    #informant
-    #---------------
-    $query->bindParam(':InformantFullname',$InformantFullname,PDO::PARAM_STR);
-    $query->bindParam(':InformantQualification',$InformantQualification,PDO::PARAM_STR);
-    $query->bindParam(':InformantAddress',$InformantAddress,PDO::PARAM_STR);
-
+    $query->bindParam(':DeliveredByTrained',$DeliveredByTrained,PDO::PARAM_STR);
+    $query->bindParam(':BirthRecordNo',$BirthRecordNo,PDO::PARAM_STR);
 
     $query->execute();
 
-
-   $LastInsertId=$dbh->lastInsertId();
-   
-   if ($LastInsertId>0) {
-     $_SESSION['BirthRecord'] =  $BirthRecordNo;
-    echo '<script>alert("Birth Certificate applied succesfully")</script>';
-    echo "<script>window.location.href ='birth-record-forms.php'</script>";
-  }
-  else
-    {
-         echo '<script>alert("Something Went Wrong. Please try again")</script>';
-    }
+    echo '<script>alert("Birth Record Added succesfully")</script>';
+    echo "<script>window.location.href ='manage-forms.php'</script>";
 }
+
 else
 {
 
-echo "<script>alert('Date of Birth and Father Name is  already exist. Please try again');</script>";
+echo "<script>alert('Birth Record Number Already Exists');</script>";
   
 }}
   ?>
@@ -176,7 +155,7 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                                         <ul class="breadcome-menu">
                                             <li><a href="dashboard.php">Home</a> <span class="bread-slash">/</span>
                                             </li>
-                                            <li><span class="bread-blod">Birth Registration Form</span>
+                                            <li><span class="bread-blod">Birth Record Form</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -196,7 +175,7 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                             <div class="sparkline12-list shadow-reset mg-t-30">
                                 <div class="sparkline12-hd">
                                     <div class="main-sparkline12-hd">
-                                        <h1>Application Form</h1>
+                                        <h1>Birth Record Form</h1>
                                         <div class="sparkline12-outline-icon">
                                             <span class="sparkline12-collapse-link"><i class="fa fa-chevron-up"></i></span>
                                             <span><i class="fa fa-wrench"></i></span>
@@ -215,24 +194,24 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Date of Birth</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Birth Record Number</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
 
-                                                                    <input type="date" class="form-control" name="dob" value="" required="true" />
+                                                                    <input type="number" class="form-control" name="BirthRecordNo" value="" required="true" placeholder="<?php echo htmlentities($_SESSION['BirthRecord']); ?>" disabled/>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3 col-md-9 col-sm-9 col-xs-9">
-                                                                    <label class="login2 pull-right pull-right-pro"><span class="basic-ds-n">Gender</span></label>
+                                                                    <label class="login2 pull-right pull-right-pro"><span class="basic-ds-n">Child's Sex</span></label>
                                                                 </div>
                                                                 <div class="col-lg-9 col-md-3 col-sm-3 col-xs-3">
                                                                     <div class="bt-df-checkbox">
-                                                                       <p style="text-align: left;"> <input type="radio"  name="gender" id="gender" value="Female" checked="true">Female</p>
+                                                                       <p style="text-align: left;"> <input type="radio"  name="Sex" id="Sex" value="Female" checked="true">Female</p>
              
-                                                                   <p style="text-align: left;"> <input type="radio" name="gender" id="gender" value="Male">Male</p>
+                                                                   <p style="text-align: left;"> <input type="radio" name="Sex" id="Sex" value="Male">Male</p>
              
                                                                 </div>
                                                             </div>
@@ -240,20 +219,20 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">First Names</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Date Of Birth</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" name="ChildFirstNames" value="" required="true" />
+                                                                    <input type="date" class="form-control" name="DateOfBirth" value="" required="true" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Last Name</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Birth Weight</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" name="childLastName" value="" required="true" />
+                                                                    <input type="number" class="form-control" name="BirthWeight" value="" placeholder="In kilograms" required="true" min="0" value="10" step="0.1"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -263,17 +242,17 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                                                                     <label class="login2 pull-right pull-right-pro">Place of Birth</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" value="" name="pob" />
+                                                                    <input type="text" class="form-control" required="true" value="" name="PlaceOfBirth" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Father's First Names</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Maiden Surname</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" value="" name="FatherFirstNames" />
+                                                                    <input type="text" class="form-control" required="true" value="" name="MaidenSurname" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -281,50 +260,50 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Father's Last Name</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Maiden's First Names</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" value="" name="FatherLastName" />
+                                                                    <input type="text" class="form-control" required="true" value="" name="FirstName" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Father's Place of birth</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Maiden's ID Number</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" name="FatherPob" value="" required="true" /></input>
+                                                                    <input type="text" class="form-control" name="IDNumber" value="" required="true" /></input>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                          <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Father's ID Number</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Maiden's Married Surname</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" name="FatherID" value="" required="true"/></input>
+                                                                    <input type="text" class="form-control" name="MarriedSurname" value="" required="true"/></input>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                          <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Mother's First Names</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Issuing Officer's FullName</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                   <input type="text" class="form-control" required="true" value="" name="MotherFirstNames" />
+                                                                   <input type="text" class="form-control" required="true" value="" name="OfficerFullName" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                        <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Mother's Last Name</label>
+                                                                    <label class="login2 pull-right pull-right-pro">Issuing Officer's Designation</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" name="MotherLastName" value="" />
+                                                                    <input type="text" class="form-control" required="true" name="OfficerDesignation" value="" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -332,63 +311,18 @@ echo "<script>alert('Date of Birth and Father Name is  already exist. Please try
                                                         <div class="form-group-inner">
                                                             <div class="row">
                                                                 <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Mother's ID Number</label>
+                                                                    <label class="login2 pull-right pull-right-pro">If deliverd at Home ->Delivered By</label>
                                                                 </div>
                                                                 <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" name="MotherID" value="" />
+                                                                    <p style="text-align: left;"> <input type="radio"  name="DeliveredByTrained" id="DeliveredByTrained" value="true" checked="true">Trained</p>
+             
+                                                                   <p style="text-align: left;"> <input type="radio" name="DeliveredByTrained" id="DeliveredByTrained" value="false">Untrained</p>
+
+                                                                   <p style="text-align: left;"> <input type="radio" name="DeliveredByTrained" id="DeliveredByTrained" value="Not">Not Delivered at home</p>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group-inner">
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Mother's Place of  Birth</label>
-                                                                </div>
-                                                                <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" name="MotherPob" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group-inner">
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Informant's FullName</label>
-                                                                </div>
-                                                                <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" name="InformantFullname" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group-inner">
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Informant's Qualification</label>
-                                                                </div>
-                                                                <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" name="InformantQualification" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group-inner">
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Informant's Address</label>
-                                                                </div>
-                                                                <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" name="InformantAddress" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group-inner">
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <label class="login2 pull-right pull-right-pro">Birth Record Number</label>
-                                                                </div>
-                                                                <div class="col-lg-9">
-                                                                    <input type="text" class="form-control" required="true" name="BirthRecordNo" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        
                                                                                                        
                                                     
                                                         <div class="form-group-inner">

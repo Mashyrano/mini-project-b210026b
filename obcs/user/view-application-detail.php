@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['BirthRecord'] = null;
 error_reporting(0);
 include('includes/dbconnection.php');
 if (strlen($_SESSION['obcsuid']==0)) {
@@ -7,13 +8,24 @@ if (strlen($_SESSION['obcsuid']==0)) {
   } else{
 
 
-
   ?>
 <!doctype html>
 <html class="no-js" lang="en">
 
 <head>
-   
+  
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+.bold {font-weight: bold;}
+</style>
+
     <title>Manage Application Form | Online Certificate System</title>
   
     <!-- Google Fonts
@@ -116,11 +128,13 @@ $query-> bindParam(':vid', $vid, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 
+
 $cnt=1;
 if($query->rowCount() > 0)
 {
+
 foreach($results as $row)
-{               ?>
+{    $_SESSION['BirthRecord'] = $row->BirthRecordNo;?>
                                 <table border="1" class="table table-bordered">
  <tr align="center">
 <td colspan="4" style="font-size:20px;color:blue">
@@ -143,60 +157,59 @@ foreach($results as $row)
 <tr align="center">
 <td colspan="4" style="font-size:20px;color:blue">
  Application Details</td></tr>
+</table>
 
+<table style="width:100%" border="1" class="table table-bordered">
  <tr>
-         <th scope>Date of apply</th>
-    <td colspan="3"><?php  echo $row->Dateofapply;?></td>
+    <th rowspan="5">Child</th>
+
+        <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->ChildFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->childLastName;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->PlaceofBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Date Of Birth:&#160;&#160;</span><?php  echo $row->DateofBirth;?></td></tr>
+        <tr><td colspan="2"><span class='bold'>Sex:&#160;&#160;</span><?php  echo $row->Gender;?></td></tr>
+  
  </tr>
  <tr>
-    <th scope>Full Name</th>
-    <td><?php  echo $row->FullName;?></td>
-    <th scope>Gender</th>
-    <td><?php  echo $row->Gender;?></td>
+    <th rowspan="3">Father</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->FatherFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->FatherLastName;?></td></tr>
+
+    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->FatherPob;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->FatherID;?></td></tr>
   </tr>
    <tr>
-    <th scope>Date of Birth</th>
-    <td><?php  echo $row->DateofBirth;?></td>
-    <th scope>Place of Birth</th>
-    <td><?php  echo $row->PlaceofBirth;?></td>
+    <th rowspan="3">Mother</th>
+    <tr><td><span class='bold'>First Names:&#160;&#160;</span><?php  echo $row->MotherFirstNames;?></td> <td><span class='bold'>Last Name:&#160;&#160;</span><?php  echo $row->MotherLastName;?></td></tr>
+
+    <tr><td><span class='bold'>Place Of Birth:&#160;&#160;</span><?php  echo $row->MotherPob;?></td> <td><span class='bold'>ID Number:&#160;&#160;</span><?php  echo $row->MotherID;?></td></tr>
   </tr>
+
   <tr>
-    <th scope>Name of Mother</th>
-    <td><?php  echo $row->NameOfMother;?></td>
-       <th scope>Name of Father</th>
-    <td><?php  echo $row->NameofFather;?></td>
+    <th rowspan="3">Informant</th>
+    <tr><td><span class='bold'>Full name:&#160;&#160;</span><?php  echo $row->InformantName;?></td> <td><span class='bold'>Qualification:&#160;&#160;</span><?php  echo $row->InformantQualification;?></td></tr>
 
+    <tr><td colspan="2"><span class='bold'>Address:&#160;&#160;</span><?php  echo $row->InformantAddress;?></td></tr>
   </tr>
-   <tr>
-<th scope>Permanent Address</th>
-    <td><?php  echo $row->PermanentAdd;?></td>
-    <th scope>Postal Address</th>
-    <td><?php  echo $row->PostalAdd;?></td>
-
-  </tr>
-   <tr>
-        <th scope>Mobile Number</th>
-    <td><?php  echo $row->MobileNumber;?></td>
-    <th scope>Email</th>
-    <td><?php  echo $row->Email;?></td>
-
-  </tr>
+  
   <tr>
-    <th scope>Remark</th>
+    <th rowspan="3"> . </th>
+    <tr>
+        <td><span class='bold'>Birth Record Number:&#160;&#160;</span><?php  echo $row->BirthRecordNo;?></td>
+        <td class="datatable-ct"><a href="view-birth-record-detail.php?viewid=<?php echo htmlentities ($row->ID);?>" class='btn btn-primary'>View Birth Record</a>
+                                                    </td>
+  </tr>
+    <tr>
     <?php if($row->Remark==""){ ?>
 
-                     <td><?php echo "Your apllication still pending"; ?></td>
-<?php } else { ?>                  <td><?php  echo htmlentities($row->Remark);?>
+                     <td><span class='bold'>Remark:&#160;&#160;</span><?php echo "Your apllication still pending"; ?></td>
+<?php } else { ?>                  <td><span class='bold'>Remark:&#160;&#160;</span><?php  echo htmlentities($row->Remark);?>
                   </td>
                   <?php } ?>
-    <th scope>Status</th>
     <?php if($row->Status==""){ ?>
 
-                     <td><?php echo "Pending"; ?></td>
-<?php } else { ?>                  <td><?php  echo htmlentities($row->Status);?>
-                  </td>
+                     <td><span class='bold'>Status:&#160;&#160;</span><?php echo "Pending"; ?></td>
+<?php } else { ?>                  <td><span class='bold'>Status:&#160;&#160;</span><?php  echo htmlentities($row->Status);?>
+                  </td></tr></tr>
                   <?php } ?>
-  </tr>
+
  
   <?php }}?>
 </table>
